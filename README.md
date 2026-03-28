@@ -8,11 +8,9 @@ Generates [ML-KEM-768 + X25519](https://words.filippo.io/post-quantum-age/) hybr
 
 ### Docker (recommended)
 
-All Docker commands include security hardening flags (network isolation, read-only filesystem, dropped capabilities). The [justfile](justfile) wraps these so you don't have to remember them:
-
 ```bash
-# Build the image
-just docker
+# Pull the image
+docker pull ghcr.io/pike00/coldkey:latest
 
 # Interactive — generate a key and paper backup
 just docker-run
@@ -21,7 +19,7 @@ just docker-run
 just docker-backup ~/.config/sops/age/keys.txt
 ```
 
-Output is written to `./output/`.
+All `just docker-*` commands include security hardening flags (network isolation, read-only filesystem, dropped capabilities). Output is written to `./output/`.
 
 ### From source
 
@@ -118,7 +116,7 @@ The generated HTML document contains:
 
 ```bash
 just build       # Local binary
-just docker      # Docker image
+just docker      # Docker image (ghcr.io/pike00/coldkey)
 just test        # Run tests
 just ci          # Full CI: vet → test → build → docker
 ```

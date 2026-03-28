@@ -70,7 +70,9 @@ func cmdGenerate(args []string) {
 	output := fs.String("o", "", "Key file output path (default: stdout)")
 	force := fs.Bool("f", false, "Overwrite existing file")
 	noBackup := fs.Bool("no-backup", false, "Skip HTML backup generation")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil {
+		fatalf("parsing flags: %v", err)
+	}
 
 	fmt.Fprintln(os.Stderr, "coldkey: generating post-quantum age key (ML-KEM-768 + X25519)...")
 
@@ -127,7 +129,9 @@ func cmdGenerate(args []string) {
 func cmdBackup(args []string) {
 	fs := flag.NewFlagSet("backup", flag.ExitOnError)
 	output := fs.String("o", "", "HTML output path")
-	fs.Parse(args)
+	if err := fs.Parse(args); err != nil {
+		fatalf("parsing flags: %v", err)
+	}
 
 	if fs.NArg() < 1 {
 		fatalf("usage: coldkey backup [-o PATH] KEYFILE")

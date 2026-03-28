@@ -11,15 +11,16 @@ import (
 
 // Generate produces an HTML paper backup from a parsed key file.
 func Generate(ki *keyfile.KeyInfo, version string) ([]byte, error) {
-	// Generate QR codes
-	chunks, err := GenerateQRCodes(ki.RawContent)
+	// Generate QR codes from private key only (public key can be regenerated)
+	secretKeyData := []byte(ki.SecretKey)
+	chunks, err := GenerateQRCodes(secretKeyData)
 	if err != nil {
 		return nil, fmt.Errorf("generating QR codes: %w", err)
 	}
 
 	usagePct := 0
 	if len(chunks) == 1 {
-		usagePct = int(ki.FileSize) * 100 / MaxQRCapacity
+		usagePct = len(secretKeyData) * 100 / MaxQRCapacity
 	}
 
 	data := TemplateData{

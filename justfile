@@ -1,6 +1,6 @@
 version := `git describe --tags --always --dirty 2>/dev/null || echo dev`
 binary := "coldkey"
-image := "coldkey"
+image := "ghcr.io/pike00/coldkey"
 
 goflags := "-trimpath -ldflags=\"-s -w -X main.version=" + version + "\""
 security_flags := "--network none --read-only --cap-drop ALL --security-opt no-new-privileges:true --tmpfs /tmp:rw,noexec,nosuid,size=10m"
@@ -45,6 +45,11 @@ docker-backup KEYFILE:
         -v {{KEYFILE}}:/keys/keys.txt:ro \
         -v $(pwd)/output:/out \
         {{image}}:latest backup -o /out/backup.html /keys/keys.txt
+
+# Push Docker image to ghcr.io
+push: docker
+    docker push {{image}}:{{version}}
+    docker push {{image}}:latest
 
 # Remove build artifacts
 clean:

@@ -17,8 +17,8 @@ type QRChunk struct {
 	DataLen int
 }
 
-// maxPayload is the conservative max bytes per QR code (v40, EC-L = 2953 minus header overhead).
-const maxPayload = 2900
+// maxPayload is the conservative max bytes per QR code (v40, EC-H = 1273 minus header overhead).
+const maxPayload = 1250
 
 // GenerateQRCodes encodes data into one or more QR code SVGs.
 // If data fits in a single QR code, no framing header is added.
@@ -65,15 +65,15 @@ func GenerateQRCodes(data []byte) ([]QRChunk, error) {
 	return chunks, nil
 }
 
-// MaxQRCapacity is the byte limit for QR version 40 at error correction level L.
-const MaxQRCapacity = 2953
+// MaxQRCapacity is the byte limit for QR version 40 at error correction level H.
+const MaxQRCapacity = 1273
 
 func encodeQR(data []byte) (string, error) {
 	seg, err := qr.MakeBytes(data)
 	if err != nil {
 		return "", fmt.Errorf("creating QR segment: %w", err)
 	}
-	code, err := qr.EncodeSegments([]*qr.QrSegment{seg}, qr.Low, 1, 40, -1, true)
+	code, err := qr.EncodeSegments([]*qr.QrSegment{seg}, qr.High, 1, 40, -1, true)
 	if err != nil {
 		return "", fmt.Errorf("encoding QR: %w", err)
 	}

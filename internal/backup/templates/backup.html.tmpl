@@ -121,9 +121,9 @@
 {{if eq .TotalQRParts 1}}
 <div class="columns">
   <div class="col-qr">
-    <div class="section-label">QR Code</div>
+    <div class="section-label">QR Code (private key only)</div>
     {{(index .QRChunks 0).SVG}}
-    <div class="qr-meta">{{.FileSize}} / {{.MaxQRCapacity}} bytes ({{.QRUsagePct}}%)</div>
+    <div class="qr-meta">{{(index .QRChunks 0).DataLen}} / {{.MaxQRCapacity}} bytes ({{.QRUsagePct}}%)</div>
   </div>
   <div class="col-right">
     <div class="section-label">SHA-256 Checksum</div>
@@ -131,8 +131,9 @@
     <div class="recovery">
       <strong>Recovery</strong>
       <ol>
-        <li>Scan QR code or type the raw key text above</li>
-        <li>Save to <code>~/.config/sops/age/keys.txt</code></li>
+        <li>Scan QR code to recover the private key, or type it from the raw key text above</li>
+        <li>Regenerate the public key: <code>age-keygen -y</code> with the private key</li>
+        <li>Reconstruct the key file and save to <code>~/.config/sops/age/keys.txt</code></li>
         <li>Verify: <code>sha256sum keys.txt</code> matches checksum</li>
         <li>Test: <code>sops -d &lt;any .sops file&gt;</code></li>
       </ol>
@@ -160,11 +161,12 @@
 <div class="recovery">
   <strong>Recovery (multi-QR)</strong>
   <ol>
-    <li>Scan all {{.TotalQRParts}} QR codes in order</li>
+    <li>Scan all {{.TotalQRParts}} QR codes in order to recover the private key</li>
     <li>Strip the <code>COLDKEY:N/M:</code> prefix from each payload</li>
-    <li>Concatenate payloads to reconstruct <code>keys.txt</code></li>
+    <li>Concatenate payloads to reconstruct the private key</li>
+    <li>Regenerate the public key: <code>age-keygen -y</code> with the private key</li>
+    <li>Reconstruct the key file and save to <code>~/.config/sops/age/keys.txt</code></li>
     <li>Verify: <code>sha256sum keys.txt</code> = <code>{{.SHA256}}</code></li>
-    <li>Place at <code>~/.config/sops/age/keys.txt</code></li>
   </ol>
 </div>
 <div class="warning" style="margin-top:0.4em;">
