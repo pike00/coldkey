@@ -8,38 +8,20 @@ Generates [ML-KEM-768 + X25519](https://words.filippo.io/post-quantum-age/) hybr
 
 ### Docker (recommended)
 
+All Docker commands include security hardening flags (network isolation, read-only filesystem, dropped capabilities). The [justfile](justfile) wraps these so you don't have to remember them:
+
 ```bash
 # Build the image
-docker build -t coldkey .
+just docker
 
 # Interactive — generate a key and paper backup
-docker run --rm -it \
-  --network none --read-only --cap-drop ALL \
-  --security-opt no-new-privileges:true \
-  --tmpfs /tmp:rw,noexec,nosuid,size=10m \
-  -u "$(id -u):$(id -g)" \
-  -v ./output:/out \
-  coldkey
-
-# Generate key directly
-docker run --rm -it \
-  --network none --read-only --cap-drop ALL \
-  --security-opt no-new-privileges:true \
-  --tmpfs /tmp:rw,noexec,nosuid,size=10m \
-  -u "$(id -u):$(id -g)" \
-  -v ./output:/out \
-  coldkey generate -o /out/keys.txt
+just docker-run
 
 # Backup an existing key
-docker run --rm \
-  --network none --read-only --cap-drop ALL \
-  --security-opt no-new-privileges:true \
-  --tmpfs /tmp:rw,noexec,nosuid,size=10m \
-  -u "$(id -u):$(id -g)" \
-  -v ~/.config/sops/age/keys.txt:/keys/keys.txt:ro \
-  -v ./output:/out \
-  coldkey backup -o /out/backup.html /keys/keys.txt
+just docker-backup ~/.config/sops/age/keys.txt
 ```
+
+Output is written to `./output/`.
 
 ### From source
 
@@ -90,6 +72,8 @@ Print the version string.
 | Memory zeroing | Best-effort `secure.Zero()` on key buffers before GC (see [Limitations](#limitations)) |
 
 ### Docker flags explained
+
+The `just docker-run` and `just docker-backup` commands apply these flags automatically:
 
 | Flag | Purpose |
 |------|---------|

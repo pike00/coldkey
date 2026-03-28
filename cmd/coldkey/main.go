@@ -58,11 +58,10 @@ Generate flags:
 Backup flags:
   -o PATH    HTML output path (default: <keyfile>-backup.html)
 
-Docker:
-  docker run --rm -it --network none --read-only --cap-drop ALL \
-    --security-opt no-new-privileges:true \
-    --tmpfs /tmp:rw,noexec,nosuid,size=10m \
-    -v ./output:/out coldkey
+Docker (via just):
+  just docker          Build the image
+  just docker-run      Interactive mode with security hardening
+  just docker-backup KEYFILE   Backup an existing key
 `)
 }
 

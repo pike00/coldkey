@@ -3,6 +3,7 @@ binary := "coldkey"
 image := "coldkey"
 
 goflags := "-trimpath -ldflags=\"-s -w -X main.version=" + version + "\""
+security_flags := "--network none --read-only --cap-drop ALL --security-opt no-new-privileges:true --tmpfs /tmp:rw,noexec,nosuid,size=10m"
 
 # Build the binary
 build:
@@ -31,12 +32,7 @@ docker:
 # Run interactively in Docker (secure defaults)
 docker-run:
     @mkdir -p output
-    docker run --rm -it \
-        --network none \
-        --read-only \
-        --cap-drop ALL \
-        --security-opt no-new-privileges:true \
-        --tmpfs /tmp:rw,noexec,nosuid,size=10m \
+    docker run --rm -it {{security_flags}} \
         -u $(id -u):$(id -g) \
         -v $(pwd)/output:/out \
         {{image}}:latest
@@ -44,12 +40,7 @@ docker-run:
 # Create backup from existing key via Docker
 docker-backup KEYFILE:
     @mkdir -p output
-    docker run --rm \
-        --network none \
-        --read-only \
-        --cap-drop ALL \
-        --security-opt no-new-privileges:true \
-        --tmpfs /tmp:rw,noexec,nosuid,size=10m \
+    docker run --rm {{security_flags}} \
         -u $(id -u):$(id -g) \
         -v {{KEYFILE}}:/keys/keys.txt:ro \
         -v $(pwd)/output:/out \
