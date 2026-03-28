@@ -24,6 +24,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 # ── Stage 2: Runtime ────────────────────────────────────────────────
 FROM gcr.io/distroless/static-debian12:nonroot
 
+LABEL org.opencontainers.image.source="https://github.com/pike00/coldkey"
+
 COPY --from=builder /coldkey /coldkey
 COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
