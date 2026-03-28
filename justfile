@@ -51,6 +51,11 @@ push: docker
     docker push {{image}}:{{version}}
     docker push {{image}}:latest
 
+# Tag a release and push (triggers CI release workflow)
+release TAG:
+    git tag {{TAG}}
+    git push origin {{TAG}}
+
 # Remove build artifacts
 clean:
     rm -f {{binary}}
