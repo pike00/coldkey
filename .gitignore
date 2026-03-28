@@ -1,0 +1,32 @@
+# Binary
+/coldkey
+/output/
+
+# Key material (defense-in-depth)
+*.key
+*.pem
+*.age
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+go.work.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment
+.env*
+
+# OS
+.DS_Store
+Thumbs.db

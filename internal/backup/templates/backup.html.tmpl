@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>coldkey — Age Post-Quantum Key Backup</title>
+<style>
+  @page { size: letter; margin: 0.4in 0.5in; }
+  @media print { .no-print { display: none; } }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    max-width: 7.5in;
+    margin: 0 auto;
+    padding: 0;
+    color: #111;
+    font-size: 9pt;
+  }
+  h1 {
+    text-align: center;
+    color: #b91c1c;
+    font-size: 1.3em;
+    border-bottom: 2px solid #b91c1c;
+    padding-bottom: 0.2em;
+    margin: 0 0 0.2em;
+  }
+  table.meta {
+    margin: 0 auto 0.4em;
+    border-collapse: collapse;
+    font-size: 0.85em;
+    color: #333;
+  }
+  table.meta td { padding: 0.05em 0.5em; }
+  table.meta td:first-child { font-weight: bold; text-align: right; color: #555; }
+  table.meta td:last-child { font-family: "Courier New", monospace; font-size: 0.92em; }
+  .section-label {
+    font-weight: bold;
+    font-size: 0.9em;
+    margin: 0.5em 0 0.15em;
+    color: #333;
+  }
+  .key-block {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 0.4em 0.6em;
+    font-family: "Courier New", monospace;
+    font-size: 8.5pt;
+    white-space: pre-wrap;
+    word-break: break-all;
+    line-height: 1.35;
+  }
+  .columns {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6em;
+    margin-top: 0.4em;
+  }
+  .col-qr { flex: 0 0 auto; text-align: center; }
+  .col-qr svg { width: 2.4in; height: 2.4in; }
+  .col-right { flex: 1; min-width: 0; }
+  .qr-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    justify-content: center;
+    margin-top: 0.4em;
+  }
+  .qr-cell { text-align: center; }
+  .qr-cell svg { width: 2.2in; height: 2.2in; }
+  .qr-label {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 0.1em;
+  }
+  .qr-meta {
+    font-size: 0.75em;
+    color: #666;
+    margin-top: 0.1em;
+  }
+  .checksum {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 0.3em 0.5em;
+    font-family: "Courier New", monospace;
+    font-size: 8pt;
+    word-break: break-all;
+  }
+  .recovery {
+    font-size: 0.82em;
+    margin-top: 0.5em;
+    color: #333;
+  }
+  .recovery ol { margin: 0.2em 0; padding-left: 1.5em; }
+  .recovery li { margin-bottom: 0.1em; }
+  .warning {
+    color: #b91c1c;
+    font-weight: bold;
+    font-size: 0.85em;
+  }
+  .footer {
+    text-align: center;
+    font-size: 0.75em;
+    color: #999;
+    margin-top: 0.4em;
+  }
+</style>
+</head>
+<body>
+
+<h1>Age Post-Quantum Private Key &mdash; DO NOT SHARE</h1>
+
+<table class="meta">
+  <tr><td>Generated</td><td>{{.Date}}</td></tr>
+</table>
+
+<div class="section-label">Raw Key File</div>
+<div class="key-block">{{.RawKeyContent}}</div>
+
+{{if eq .TotalQRParts 1}}
+<div class="columns">
+  <div class="col-qr">
+    <div class="section-label">QR Code</div>
+    {{(index .QRChunks 0).SVG}}
+    <div class="qr-meta">{{.FileSize}} / {{.MaxQRCapacity}} bytes ({{.QRUsagePct}}%)</div>
+  </div>
+  <div class="col-right">
+    <div class="section-label">SHA-256 Checksum</div>
+    <div class="checksum">{{.SHA256}}</div>
+    <div class="recovery">
+      <strong>Recovery</strong>
+      <ol>
+        <li>Scan QR code or type the raw key text above</li>
+        <li>Save to <code>~/.config/sops/age/keys.txt</code></li>
+        <li>Verify: <code>sha256sum keys.txt</code> matches checksum</li>
+        <li>Test: <code>sops -d &lt;any .sops file&gt;</code></li>
+      </ol>
+    </div>
+    <div class="warning" style="margin-top:0.6em;">
+      This key decrypts all SOPS secrets. Store securely. Shred digital copies after printing.
+    </div>
+  </div>
+</div>
+{{else}}
+<div class="section-label">QR Codes ({{.TotalQRParts}} parts)</div>
+<div class="qr-grid">
+  {{range .QRChunks}}
+  <div class="qr-cell">
+    <div class="qr-label">Part {{.Part}} of {{.Total}}</div>
+    {{.SVG}}
+    <div class="qr-meta">{{.DataLen}} bytes</div>
+  </div>
+  {{end}}
+</div>
+
+<div class="section-label">SHA-256 Checksum</div>
+<div class="checksum">{{.SHA256}}</div>
+
+<div class="recovery">
+  <strong>Recovery (multi-QR)</strong>
+  <ol>
+    <li>Scan all {{.TotalQRParts}} QR codes in order</li>
+    <li>Strip the <code>COLDKEY:N/M:</code> prefix from each payload</li>
+    <li>Concatenate payloads to reconstruct <code>keys.txt</code></li>
+    <li>Verify: <code>sha256sum keys.txt</code> = <code>{{.SHA256}}</code></li>
+    <li>Place at <code>~/.config/sops/age/keys.txt</code></li>
+  </ol>
+</div>
+<div class="warning" style="margin-top:0.4em;">
+  This key decrypts all SOPS secrets. Store securely. Shred digital copies after printing.
+</div>
+{{end}}
+
+<p class="no-print" style="text-align:center; margin-top:1em;">
+  <button onclick="window.print()" style="padding:0.4em 1.5em; font-size:1em; cursor:pointer;">Print</button>
+</p>
+
+<div class="footer">Generated by coldkey {{.Version}}</div>
+
+</body>
+</html>
