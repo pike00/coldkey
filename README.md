@@ -9,9 +9,9 @@
 
 coldkey generates [post-quantum (ML-KEM-768 + X25519)](https://words.filippo.io/post-quantum-age/) age keys and produces single-page printable HTML backups with QR codes. Print it, laminate it, store it in a fireproof safe. Your secrets survive even if every digital copy is gone.
 
-<!-- TODO: Add terminal recording
-[![demo](https://asciinema.org/a/XXXXX.svg)](https://asciinema.org/a/XXXXX)
--->
+[![demo](https://asciinema.org/a/MitZvLXcwYdBXkeF.svg)](https://asciinema.org/a/MitZvLXcwYdBXkeF)
+
+![Image of Printout](image.png)
 
 ## Install
 

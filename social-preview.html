@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>coldkey social preview</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1280px;
+    height: 640px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    width: 1280px;
+    height: 640px;
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Subtle grid pattern */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(56, 139, 253, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 139, 253, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  /* Glow accent */
+  .glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(56, 139, 253, 0.08) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+  }
+  .glow-2 {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 70%);
+    bottom: -80px;
+    left: -80px;
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .icon-row {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 4px;
+  }
+  /* Key + shield icon via CSS */
+  .icon {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #388bfd;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    background: rgba(56, 139, 253, 0.08);
+  }
+  .project-name {
+    font-size: 96px;
+    font-weight: 700;
+    letter-spacing: -3px;
+    background: linear-gradient(135deg, #e6edf3 0%, #8b949e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .tagline {
+    font-size: 34px;
+    font-weight: 400;
+    color: #8b949e;
+    max-width: 900px;
+    line-height: 1.4;
+  }
+  .tags {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .tag {
+    padding: 8px 22px;
+    border-radius: 24px;
+    font-size: 19px;
+    font-weight: 500;
+    border: 1px solid #30363d;
+    color: #8b949e;
+    background: rgba(110, 118, 129, 0.04);
+  }
+  .tag.highlight {
+    border-color: rgba(56, 139, 253, 0.4);
+    color: #58a6ff;
+    background: rgba(56, 139, 253, 0.08);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="glow"></div>
+    <div class="glow-2"></div>
+    <div class="content">
+      <div class="icon-row">
+        <div class="icon">&#x1f512;</div>
+        <span class="project-name">coldkey</span>
+      </div>
+      <div class="tagline">
+        Post-quantum age key generation<br>& paper backup tool
+      </div>
+      <div class="tags">
+        <span class="tag highlight">ML-KEM-768 + X25519</span>
+        <span class="tag">QR backup</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Go</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

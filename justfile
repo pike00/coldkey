@@ -56,6 +56,10 @@ release TAG:
     git tag {{TAG}}
     git push origin {{TAG}}
 
+# Record asciinema demo
+demo:
+    ./demo/record.sh
+
 # Remove build artifacts
 clean:
     rm -f {{binary}}
