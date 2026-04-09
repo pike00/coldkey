@@ -1,6 +1,7 @@
 # Binary
 /coldkey
 /output/
+/dist/
 
 # Asciinema recordings (regenerate with: ./demo/record.sh)
 *.cast
