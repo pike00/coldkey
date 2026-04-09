@@ -27,5 +27,16 @@ archives:
 checksum:
   name_template: "checksums.txt"
 
+homebrew_casks:
+  - repository:
+      owner: pike00
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    name: coldkey
+    homepage: "https://github.com/pike00/coldkey"
+    description: "Post-quantum age key generation and paper backup tool"
+    license: "MIT"
+    commit_msg_template: "Update coldkey to {{ .Tag }}"
+
 changelog:
   use: github-native

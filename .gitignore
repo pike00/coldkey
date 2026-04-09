@@ -2,6 +2,9 @@
 /coldkey
 /output/
 
+# Asciinema recordings (regenerate with: ./demo/record.sh)
+*.cast
+
 # Key material (defense-in-depth)
 *.key
 *.pem

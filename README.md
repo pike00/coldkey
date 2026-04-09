@@ -1,8 +1,27 @@
 # coldkey
 
-Post-quantum age key generation and paper backup tool.
+[![CI](https://github.com/pike00/coldkey/actions/workflows/ci.yml/badge.svg)](https://github.com/pike00/coldkey/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/pike00/coldkey)](https://github.com/pike00/coldkey/releases/latest)
+[![Go](https://img.shields.io/github/go-mod/go-version/pike00/coldkey)](https://go.dev/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Generates [ML-KEM-768 + X25519](https://words.filippo.io/post-quantum-age/) hybrid age keys and produces single-page printable HTML backups with QR codes for disaster recovery.
+**Your age encryption keys are one disk failure away from total loss.** If you use [age](https://age-encryption.org/) or [sops](https://github.com/getsops/sops) to encrypt secrets, losing your private key means losing access to everything it protects -- forever.
+
+coldkey generates [post-quantum (ML-KEM-768 + X25519)](https://words.filippo.io/post-quantum-age/) age keys and produces single-page printable HTML backups with QR codes. Print it, laminate it, store it in a fireproof safe. Your secrets survive even if every digital copy is gone.
+
+<!-- TODO: Add terminal recording
+[![demo](https://asciinema.org/a/XXXXX.svg)](https://asciinema.org/a/XXXXX)
+-->
+
+## Install
+
+```bash
+# Homebrew (macOS/Linux)
+brew install --cask pike00/tap/coldkey
+
+# Or with Go
+go install github.com/pike00/coldkey/cmd/coldkey@latest
+```
 
 ## Quick start
 
