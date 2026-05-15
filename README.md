@@ -13,39 +13,20 @@ coldkey generates [post-quantum (ML-KEM-768 + X25519)](https://words.filippo.io/
 
 ![Image of Printout](image.png)
 
-## Install
+## Quick start
 
 ```bash
-# Homebrew (macOS/Linux)
+# Install — Homebrew (macOS/Linux)
 brew install --cask pike00/tap/coldkey
 
 # Or with Go
 go install github.com/pike00/coldkey/cmd/coldkey@latest
-```
 
-## Quick start
-
-### Docker (recommended)
-
-```bash
-# Pull the image
-docker pull ghcr.io/pike00/coldkey:latest
-
-# Interactive — generate a key and paper backup
-just docker-run
-
-# Backup an existing key
-just docker-backup ~/.config/sops/age/keys.txt
-```
-
-All `just docker-*` commands include security hardening flags (network isolation, read-only filesystem, dropped capabilities). Output is written to `./output/`.
-
-### From source
-
-```bash
-go install github.com/pike00/coldkey/cmd/coldkey@latest
+# Generate a key and paper backup
 coldkey generate -o ~/.config/sops/age/keys.txt
 ```
+
+For defense-in-depth during key generation, see [Hardened mode (Docker)](#hardened-mode-docker) below.
 
 ## Commands
 
@@ -88,9 +69,21 @@ Print the version string.
 | Image | `distroless/static:nonroot` — no shell, non-root UID 65534 |
 | Memory zeroing | Best-effort `secure.Zero()` on key buffers before GC (see [Limitations](#limitations)) |
 
-### Docker flags explained
+### Hardened mode (Docker)
 
-The `just docker-run` and `just docker-backup` commands apply these flags automatically:
+An optional distroless Docker image runs key generation under network isolation, a read-only root filesystem, and dropped capabilities. Note that the resulting `keys.txt` is written to a host-mounted volume, so the container only hardens the generation step — the key at rest sits on the host like any other file.
+
+```bash
+docker pull ghcr.io/pike00/coldkey:latest
+
+# Interactive — generate a key and paper backup
+just docker-run
+
+# Backup an existing key
+just docker-backup ~/.config/sops/age/keys.txt
+```
+
+Output is written to `./output/`. The `just docker-run` and `just docker-backup` recipes apply these flags automatically:
 
 | Flag | Purpose |
 |------|---------|
