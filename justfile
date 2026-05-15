@@ -1,3 +1,5 @@
+import 'release.just'
+
 version := `git describe --tags --always --dirty 2>/dev/null || echo dev`
 binary := "coldkey"
 image := "ghcr.io/pike00/coldkey"
@@ -50,11 +52,6 @@ docker-backup KEYFILE:
 push: docker
     docker push {{image}}:{{version}}
     docker push {{image}}:latest
-
-# Tag a release and push (triggers CI release workflow)
-release TAG:
-    git tag {{TAG}}
-    git push origin {{TAG}}
 
 # Record asciinema demo
 demo:

@@ -1,0 +1,8 @@
+[release-kit]
+project_name = "coldkey"
+project_description = "Post-quantum age key generation and paper backup tool for storing Bittensor coldkeys offline"
+branch = "main"
+base_url = "http://localhost:4000"
+model = "deepseek-v4-pro-cloud"
+reasoning_effort = "low"
+voice_notes = "Distributed via Homebrew (brew install pike00/tap/coldkey) and Docker (ghcr.io/pike00/coldkey). GoReleaser builds cross-platform binaries (Linux/macOS/Windows, amd64/arm64) and attaches them to the GitHub release automatically after the tag is pushed."

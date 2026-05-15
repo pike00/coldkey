@@ -38,5 +38,10 @@ homebrew_casks:
     license: "MIT"
     commit_msg_template: "Update coldkey to {{ .Tag }}"
 
+release:
+  # release-kit creates the GitHub release with LLM-drafted notes before the
+  # tag is pushed. GoReleaser's job is to upload binary artifacts only.
+  mode: keep-existing
+
 changelog:
-  use: github-native
+  disable: true
