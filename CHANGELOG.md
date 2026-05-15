@@ -5,6 +5,18 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-05-15
+
+### Fixed
+- Fix: replace template symlinks with copies for public repo (eacb4a6)
+
+### Other
+- Chore: integrate release-kit (b912109)
+- Readme: demote Docker to optional hardened mode (#1) (216fcd4)
+- Readme: add demo recording, printout screenshot, and social preview (985893b)
+- Demo: add asciinema recording scripts and printout image (42d6c82)
+- Gitignore: add dist/ build artifacts (3d3a2b0)
+
 ## [Unreleased]
 
 ### Other
