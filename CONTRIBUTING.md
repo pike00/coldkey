@@ -9,7 +9,7 @@ We welcome all contributions, from bug reports and feature requests to code cont
 To work on coldkey, you will need:
 
 - **Go**: The project is written in Go. You'll need a recent version installed.
-- **Make**: We use `make` to manage build tasks.
+- **Make/Just**: We use [`just`](https://github.com/casey/just) (a modern `make` alternative) to manage build tasks.
 
 To get started:
 
@@ -21,7 +21,7 @@ To get started:
    ```
 3. Run the CI pipeline locally to ensure everything works:
    ```bash
-   make ci
+   just ci
    ```
 
 ## Building Locally
@@ -29,7 +29,7 @@ To get started:
 To build the `coldkey` binary locally, run:
 
 ```bash
-make build
+just build
 ```
 
 This will produce the `coldkey` binary in the root directory.
@@ -39,16 +39,16 @@ This will produce the `coldkey` binary in the root directory.
 Testing is a crucial part of the development process. To run the test suite, use:
 
 ```bash
-make test
+just test
 ```
 
 ## Code Style Expectations
 
 We follow standard Go formatting conventions and use linters to maintain code quality. Before submitting your code, please ensure it complies with our standards:
 
-- **Formatting**: Run `make fmt` to format your code using `gofumpt`.
-- **Linting**: Run `make lint` to catch common issues using `golangci-lint`.
-- **Vetting**: Run `make vet` for standard Go static analysis.
+- **Formatting**: Run `just fmt` to format your code using `gofumpt`.
+- **Linting**: Run `just lint` to catch common issues using `golangci-lint`.
+- **Vetting**: Run `just vet` for standard Go static analysis.
 
 ## Pull Request Process
 
