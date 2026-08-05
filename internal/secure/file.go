@@ -26,11 +26,11 @@ func WriteFileForce(path string, data []byte) error {
 
 func syncAndClose(f *os.File, data []byte) error {
 	if _, err := f.Write(data); err != nil {
-		f.Close()
+		_ = f.Close()
 		return err
 	}
 	if err := f.Sync(); err != nil {
-		f.Close()
+		_ = f.Close()
 		return err
 	}
 	return f.Close()
@@ -53,18 +53,20 @@ func Shred(path string) error {
 	defer Zero(buf)
 	for pass := 0; pass < 3; pass++ {
 		if _, err := rand.Read(buf); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
 		if _, err := f.WriteAt(buf, 0); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
 		if err := f.Sync(); err != nil {
-			f.Close()
+			_ = f.Close()
 			return err
 		}
 	}
-	f.Close()
+	if err := f.Close(); err != nil {
+		return err
+	}
 	return os.Remove(path)
 }
