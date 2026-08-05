@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 
 	"github.com/pike00/coldkey/internal/backup"
-	"github.com/pike00/coldkey/internal/keygen"
 	"github.com/pike00/coldkey/internal/keyfile"
+	"github.com/pike00/coldkey/internal/keygen"
 	"github.com/pike00/coldkey/internal/prompt"
 	"github.com/pike00/coldkey/internal/secure"
 )
@@ -85,7 +85,9 @@ func cmdGenerate(args []string) {
 
 	if *output == "" {
 		// Write key to stdout
-		os.Stdout.Write(keyData)
+		if _, err := os.Stdout.Write(keyData); err != nil {
+			fatalf("writing key to stdout: %v", err)
+		}
 		if !*noBackup {
 			fmt.Fprintln(os.Stderr, "coldkey: hint: use -o PATH to also generate an HTML backup")
 		}
